@@ -1,4 +1,4 @@
-package com.foxnks.cryptoapp.adapter
+package com.foxnks.cryptoapp.ui.adapter
 
 
 
