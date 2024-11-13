@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity() {
     private fun observeCryptoData(statusMessage: TextView, recyclerView: RecyclerView) {
         viewModel.cryptoData.observe(this, Observer { cryptoList ->
             if (cryptoList != null) {
-                statusMessage.text = "Connection successful: 200 OK"
+                statusMessage.text = "Connection successful."
                 recyclerView.adapter = CryptoAdapter(cryptoList, viewModel.currencySymbol.value ?: "€")
             } else {
                 statusMessage.text = "Failed to load data."

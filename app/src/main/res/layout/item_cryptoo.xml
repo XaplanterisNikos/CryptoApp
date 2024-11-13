@@ -4,7 +4,7 @@
 
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="85dp"
+    android:layout_height="160dp"
     android:layout_marginVertical="8dp"
     android:background="@drawable/grey_bg">
 
@@ -13,7 +13,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -58,5 +58,47 @@
         app:layout_constraintStart_toStartOf="@+id/cryptoId"
         app:layout_constraintTop_toBottomOf="@+id/cryptoPrice" />
 
+    <TextView
+        android:id="@+id/priceChange24"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+10%"
+        android:textColor="@color/green"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/cryptoId"
+        app:layout_constraintTop_toBottomOf="@+id/priceChangePercentage24" />
+
+    <TextView
+        android:id="@+id/marketCap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="MarketCap"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/cryptoId"
+        app:layout_constraintTop_toBottomOf="@+id/priceChange24"
+         />
+
+    <TextView
+        android:id="@+id/highPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="highPrice"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/cryptoId"
+        app:layout_constraintTop_toBottomOf="@+id/marketCap"
+        />
+
+    <TextView
+        android:id="@+id/lowPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="lowPrice"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/cryptoId"
+        app:layout_constraintTop_toBottomOf="@+id/highPrice"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
