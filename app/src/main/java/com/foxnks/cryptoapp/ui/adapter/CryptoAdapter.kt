@@ -11,8 +11,10 @@ import com.foxnks.cryptoapp.R
 
 import com.foxnks.cryptoapp.model.CryptoModel
 
-class CryptoAdapter(private val cryptoList: List<CryptoModel>) :
-    RecyclerView.Adapter<CryptoAdapter.CryptoViewHolder>() {
+class CryptoAdapter(
+    private val cryptoList: List<CryptoModel>,
+    private val currencySymbol: String
+) : RecyclerView.Adapter<CryptoAdapter.CryptoViewHolder>() {
 
     class CryptoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val idTextView: TextView = itemView.findViewById(R.id.cryptoId)
@@ -30,7 +32,7 @@ class CryptoAdapter(private val cryptoList: List<CryptoModel>) :
         val crypto = cryptoList[position]
         holder.idTextView.text = crypto.id
         holder.symbolTextView.text = crypto.symbol
-        holder.priceTextView.text = "€${crypto.current_price}"
+        holder.priceTextView.text = "$currencySymbol${crypto.current_price}"
     }
 
     override fun getItemCount() = cryptoList.size

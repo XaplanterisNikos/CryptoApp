@@ -6,6 +6,12 @@
     android:orientation="vertical"
     android:padding="16dp">
 
+    <Switch
+        android:id="@+id/currencySwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Switch to USD" />
+
     <TextView
         android:id="@+id/statusMessage"
         android:layout_width="wrap_content"

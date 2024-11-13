@@ -1,6 +1,7 @@
 package com.foxnks.cryptoapp.ui
 
 import android.os.Bundle
+import android.widget.Switch
 import android.widget.TextView
 
 import androidx.activity.viewModels
@@ -44,20 +45,39 @@ class MainActivity : AppCompatActivity() {
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        /**
-         * viewModel.cryptoData.observe(...): Το observe παρακολουθεί τις αλλαγές στην LiveData
-         * cryptoData. Όταν τα δεδομένα ενημερώνονται:
-         * Αν cryptoList δεν είναι null, σημαίνει ότι τα δεδομένα έχουν φορτωθεί επιτυχώς:
-         * Η statusMessage εμφανίζει το μήνυμα επιτυχίας "Connection successful: 200 OK".
-         * Το recyclerView ενημερώνει τον προσαρμογέα (CryptoAdapter) με τη
-         * λίστα δεδομένων cryptoList.
-         * Αν cryptoList είναι null, σημαίνει ότι υπήρξε πρόβλημα κατά τη φόρτωση,
-         * και η statusMessage δείχνει το μήνυμα "Failed to load data."
-         */
+
+        val currencySwitch: Switch = findViewById(R.id.currencySwitch)
+
+
+
+
+
+        // Set initial data with EUR prices
+        viewModel.getCryptoDataEUR()
+        observeCryptoData(statusMessage, recyclerView)
+
+        // Switch listener to toggle between EUR and USD
+        currencySwitch.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                currencySwitch.text = "Switch to EUR"
+                viewModel.getCryptoDataUSD()
+            } else {
+                currencySwitch.text = "Switch to USD"
+                viewModel.getCryptoDataEUR()
+            }
+        }
+
+        // Observe the currency symbol and refresh adapter with the correct symbol
+        viewModel.currencySymbol.observe(this, Observer { symbol ->
+            recyclerView.adapter = viewModel.cryptoData.value?.let { CryptoAdapter(it, symbol) }
+        })
+    }
+
+    private fun observeCryptoData(statusMessage: TextView, recyclerView: RecyclerView) {
         viewModel.cryptoData.observe(this, Observer { cryptoList ->
             if (cryptoList != null) {
                 statusMessage.text = "Connection successful: 200 OK"
-                recyclerView.adapter = CryptoAdapter(cryptoList)
+                recyclerView.adapter = CryptoAdapter(cryptoList, viewModel.currencySymbol.value ?: "€")
             } else {
                 statusMessage.text = "Failed to load data."
             }
