@@ -20,6 +20,7 @@ class CryptoAdapter(
         val idTextView: TextView = itemView.findViewById(R.id.cryptoId)
         val symbolTextView: TextView = itemView.findViewById(R.id.cryptoSymbol)
         val priceTextView: TextView = itemView.findViewById(R.id.cryptoPrice)
+        val high24hTextView: TextView = itemView.findViewById(R.id.highPrice)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CryptoViewHolder {
@@ -33,6 +34,8 @@ class CryptoAdapter(
         holder.idTextView.text = crypto.id
         holder.symbolTextView.text = crypto.symbol
         holder.priceTextView.text = "$currencySymbol${crypto.current_price}"
+        holder.high24hTextView.text = "$currencySymbol${crypto.high_24h}"
+
     }
 
     override fun getItemCount() = cryptoList.size

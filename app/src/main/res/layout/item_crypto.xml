@@ -23,4 +23,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Price" />
+
+    <TextView
+        android:id="@+id/highPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="High24" />
 </LinearLayout>
