@@ -6,6 +6,12 @@
     android:orientation="vertical"
     android:padding="8dp">
 
+    <ImageView
+        android:id="@+id/logoImg"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp" />
+
     <TextView
         android:id="@+id/cryptoId"
         android:layout_width="wrap_content"
@@ -25,8 +31,34 @@
         android:text="Price" />
 
     <TextView
+        android:id="@+id/marketCap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="MarketCap" />
+
+    <TextView
         android:id="@+id/highPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="High24" />
+
+    <TextView
+        android:id="@+id/lowPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Low24" />
+
+    <TextView
+        android:id="@+id/priceChange24"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Price Change 24" />
+
+    <TextView
+        android:id="@+id/priceChangePercentage24"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Price Change Percentage 24" />
+
+
 </LinearLayout>
