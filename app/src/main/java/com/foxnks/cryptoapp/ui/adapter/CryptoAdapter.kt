@@ -24,11 +24,11 @@ class CryptoAdapter(
         val idTextView: TextView = itemView.findViewById(R.id.cryptoId)
         val symbolTextView: TextView = itemView.findViewById(R.id.cryptoSymbol)
         val priceTextView: TextView = itemView.findViewById(R.id.cryptoPrice)
-//        val high24hTextView: TextView = itemView.findViewById(R.id.highPrice)
+        //        val high24hTextView: TextView = itemView.findViewById(R.id.highPrice)
 //        val low24hTextView: TextView = itemView.findViewById(R.id.lowPrice)
 //        val marketCapTextView: TextView = itemView.findViewById(R.id.marketCap)
         val image: ImageView = itemView.findViewById(R.id.logoImg)
-//        val priceChange24hTextView: TextView = itemView.findViewById(R.id.priceChange24)
+        //        val priceChange24hTextView: TextView = itemView.findViewById(R.id.priceChange24)
         val priceChangePercentage24hTextView: TextView = itemView.findViewById(R.id.priceChangePercentage24)
     }
 

@@ -1,5 +1,8 @@
 package com.foxnks.cryptoapp.model
 
+
+
+
 data class CryptoModel(
     val id: String,
     val symbol: String,
@@ -11,3 +14,5 @@ data class CryptoModel(
     val price_change_24h: Double,
     val price_change_percentage_24h: Double
 )
+
+

@@ -27,6 +27,8 @@ class MainActivity : AppCompatActivity() {
         CryptoViewModelFactory(CryptoRepository(RetrofitInstance.api))
     }
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
