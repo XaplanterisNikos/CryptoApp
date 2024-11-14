@@ -5,59 +5,43 @@ import android.widget.Switch
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.foxnks.cryptoapp.service.RetrofitInstance
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.foxnks.cryptoapp.R
+import com.foxnks.cryptoapp.model.CryptoModel
 import com.foxnks.cryptoapp.ui.adapter.CryptoAdapter
-import com.foxnks.cryptoapp.repository.CryptoRepository
 import com.foxnks.cryptoapp.viewmodel.CryptoViewModel
 import com.foxnks.cryptoapp.viewmodel.CryptoViewModelFactory
+import com.foxnks.cryptoapp.repository.CryptoRepository
+import com.foxnks.cryptoapp.service.RetrofitInstance
 
 class MainActivity : AppCompatActivity() {
 
-    /**
-     * private val viewModel: CryptoViewModel: Δημιουργεί ένα instance του CryptoViewModel
-     * χρησιμοποιώντας τον CryptoViewModelFactory. Ο CryptoViewModelFactory δημιουργεί το
-     * CryptoViewModel παρέχοντας το CryptoRepository (που με τη σειρά του έχει πρόσβαση στο
-     * API μέσω του RetrofitInstance.api).
-     */
     private val viewModel: CryptoViewModel by viewModels {
         CryptoViewModelFactory(CryptoRepository(RetrofitInstance.api))
     }
 
-
+    private lateinit var statusMessage: TextView
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var currencySwitch: Switch
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        /**
-         * statusMessage: Ένα TextView που χρησιμοποιείται για να εμφανίζει το αποτέλεσμα
-         * της σύνδεσης (αν ήταν επιτυχής ή όχι).
-         */
-        val statusMessage: TextView = findViewById(R.id.statusMessage)
-
-        /**
-         * recyclerView: Ένα RecyclerView που εμφανίζει τα δεδομένα των κρυπτονομισμάτων.
-         * Ο LinearLayoutManager ορίζει ότι τα στοιχεία θα εμφανίζονται κατακόρυφα.
-         */
-        val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
+        // Initialize UI components
+        statusMessage = findViewById(R.id.statusMessage)
+        recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
+        currencySwitch = findViewById(R.id.currencySwitch)
 
-
-        val currencySwitch: Switch = findViewById(R.id.currencySwitch)
-
-
-
-
-
-        // Set initial data with EUR prices
+        // Initially load data in EUR
         viewModel.getCryptoDataEUR()
-        observeCryptoData(statusMessage, recyclerView)
+        viewModel.getHistoricalPrices()
+        observeData()
 
-        // Switch listener to toggle between EUR and USD
+        // Switch to toggle currency
         currencySwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 currencySwitch.text = "Switch to EUR"
@@ -66,22 +50,29 @@ class MainActivity : AppCompatActivity() {
                 currencySwitch.text = "Switch to USD"
                 viewModel.getCryptoDataEUR()
             }
+            // After currency change, refresh historical prices as well
+            viewModel.getHistoricalPrices()
         }
-
-        // Observe the currency symbol and refresh adapter with the correct symbol
-        viewModel.currencySymbol.observe(this, Observer { symbol ->
-            recyclerView.adapter = viewModel.cryptoData.value?.let { CryptoAdapter(it, symbol) }
-        })
     }
 
-    private fun observeCryptoData(statusMessage: TextView, recyclerView: RecyclerView) {
-        viewModel.cryptoData.observe(this, Observer { cryptoList ->
-            if (cryptoList != null) {
-                statusMessage.text = "Connection successful."
-                recyclerView.adapter = CryptoAdapter(cryptoList, viewModel.currencySymbol.value ?: "€")
-            } else {
-                statusMessage.text = "Failed to load data."
-            }
+    // Observe the data and update the UI accordingly
+    private fun observeData() {
+        // Observe currency symbol change
+        viewModel.currencySymbol.observe(this, Observer { symbol ->
+            // Observe crypto data
+            viewModel.cryptoData.observe(this, Observer { cryptoList ->
+                // Observe historical prices
+                viewModel.historicalPrices.observe(this, Observer { historicalPrices ->
+                    if (cryptoList != null && historicalPrices != null) {
+                        // Set status message when data is loaded successfully
+                        statusMessage.text = "Connection successful."
+                        // Set adapter with the updated data
+                        recyclerView.adapter = CryptoAdapter(cryptoList, historicalPrices, symbol)
+                    } else {
+                        statusMessage.text = "Failed to load data."
+                    }
+                })
+            })
         })
     }
 }

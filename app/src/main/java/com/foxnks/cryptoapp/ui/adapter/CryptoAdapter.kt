@@ -2,6 +2,7 @@ package com.foxnks.cryptoapp.ui.adapter
 
 
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,12 +11,17 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.foxnks.cryptoapp.R
+import com.foxnks.cryptoapp.model.CryptoHistoricalData
 
 import com.foxnks.cryptoapp.model.CryptoModel
+
 import org.w3c.dom.Text
 
 class CryptoAdapter(
     private val cryptoList: List<CryptoModel>,
+    private val historicalData: CryptoHistoricalData,  // Historical data
+    //private val sparkLineLayout: SparkLineLayout,
+
     private val currencySymbol: String
 ) : RecyclerView.Adapter<CryptoAdapter.CryptoViewHolder>() {
 
@@ -30,6 +36,7 @@ class CryptoAdapter(
         val priceChange24hTextView: TextView = itemView.findViewById(R.id.priceChange24)
         val priceChangePercentage24hTextView: TextView =
             itemView.findViewById(R.id.priceChangePercentage24)
+        val sparkLineLayout: SparkLineLayout = itemView.findViewById(R.id.sparkLineLayout)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CryptoViewHolder {
@@ -40,6 +47,9 @@ class CryptoAdapter(
 
     override fun onBindViewHolder(holder: CryptoViewHolder, position: Int) {
         val crypto = cryptoList[position]
+        // Extract the prices for this cryptocurrency
+        val historicalPrices = historicalData.prices.getOrNull(position)?.map { (it as? List<*>)?.get(1) as? Double ?: 0.0 } ?: emptyList()
+
         holder.idTextView.text = "Name: " + crypto.id
         holder.symbolTextView.text = "Symbol: " + crypto.symbol
         holder.priceTextView.text = "Current Price:  $currencySymbol${crypto.current_price}"
@@ -59,6 +69,8 @@ class CryptoAdapter(
         holder.priceChangePercentage24hTextView.setTextColor(
             if (crypto.price_change_percentage_24h > 0) Color.GREEN else Color.RED
         )
+        // Assuming you have a method to display the historical data as a sparkline
+        holder.sparkLineLayout.setSparkLineData(historicalPrices)
     }
 
     override fun getItemCount() = cryptoList.size
